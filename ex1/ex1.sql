@@ -1,4 +1,3 @@
-/*
 # 1 使用SQL语句建立基本表
 CREATE TABLE IF NOT EXISTS `Course` (
   `id` INT NOT NULL PRIMARY KEY COMMENT '课程号',
@@ -169,12 +168,11 @@ SELECT DISTINCT id,name
 FROM Student
 WHERE id NOT IN (
   SELECT student_id FROM SC
-  WHERE year >= 2018
+  WHERE year < 2018
 );
 
 SELECT dept_name,max(salary) FROM Teacher
 GROUP BY dept_name;
-*/
 
 SELECT * FROM Course
 WHERE id in (
@@ -182,3 +180,66 @@ WHERE id in (
   GROUP BY course_id
   HAVING COUNT(*) = (SELECT COUNT(*) FROM Course)
 );
+
+# 5 修改数据
+
+# 输出修改前的数据
+SELECT * FROM SC 
+WHERE course_id IN (
+  SELECT id FROM Course
+  WHERE title = "数据库"
+);
+# 修改
+UPDATE SC
+SET grade = grade + 2
+WHERE course_id IN (
+  SELECT id FROM Course
+  WHERE title = "数据库"
+);
+# 输出修改后的数据
+SELECT * FROM SC 
+WHERE course_id IN (
+  SELECT id FROM Course
+  WHERE title = "数据库"
+);
+
+# 6 删除数据
+
+# 输出删除前的数据
+SELECT * FROM SC 
+GROUP BY student_id
+HAVING AVG(grade) < 80;
+# 删除
+DELETE FROM SC
+WHERE student_id IN (
+  SELECT tmp.student_id FROM (
+    SELECT student_id FROM SC 
+    GROUP BY student_id
+    HAVING AVG(grade) < 80
+  ) AS tmp 
+);
+# 输出删除后的数据
+SELECT * FROM SC 
+GROUP BY student_id
+HAVING AVG(grade) < 80;
+
+# 7 视图操作
+CREATE VIEW myview(id,name,course_id,credit)
+AS SELECT SC.student_id,Student.name,SC.course_id,Course.credit
+FROM SC,Course,Student
+WHERE SC.course_id = Course.id AND Student.id = SC.student_id;
+CREATE VIEW TotalCredit(id,name,total_credit)
+AS SELECT id,name,SUM(credit)
+FROM myview
+GROUP BY id;
+# 输出视图
+SELECT * FROM TotalCredit;
+
+# 8 删除基本表
+DROP TABLE SC;
+DROP TABLE Course;
+DROP TABLE Teacher;
+DROP TABLE Student;
+DROP VIEW myview;
+DROP VIEW TotalCredit;
+
