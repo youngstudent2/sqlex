@@ -59,7 +59,7 @@ CHANGE COLUMN age age INT;
 
 ### 使用SQL语句插入数据
 
-首先编写数据生成的Python[脚本](./generateData.py)
+首先编写数据生成的Python[脚本](https://github.com/youngstudent2/sqlex/blob/master/ex1/generateData.py)
 
 生成数据后通过`INSERT`语句插入数据
 
