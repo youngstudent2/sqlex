@@ -1,0 +1,1 @@
+mysql -uroot -proot -Dex2 < ex2.sql 
