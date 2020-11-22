@@ -43,7 +43,11 @@ CREATE TABLE IF NOT EXISTS Department (
 );
 ```
 
+
+
 #### 1.2 插入数据
+
+> 数据生成过程使用了自己编写的[python脚本]([sqlex/generateData.py at master · youngstudent2/sqlex (github.com)](https://github.com/youngstudent2/sqlex/blob/master/2_user/generateData.py))
 
 ```mysql
 # 1.2 插入数据
@@ -102,6 +106,18 @@ VALUES
 (181860009,0,7),
 (181860009,4,10);
 ```
+插入数据后的各表截图为：
+
+><img src="D:\github\sqlex\2_user\README.assets\QQ截图20201122145507.png" alt="QQ截图20201122145507" style="zoom:50%;" />
+>
+><img src="D:\github\sqlex\2_user\README.assets\QQ截图20201122145517.png" alt="QQ截图20201122145517" style="zoom:50%;" />
+>
+><img src="D:\github\sqlex\2_user\README.assets\QQ截图20201122145553.png" alt="QQ截图20201122145553" style="zoom:50%;" />
+>
+><img src="D:\github\sqlex\2_user\README.assets\QQ截图20201122145630.png" alt="QQ截图20201122145630" style="zoom:50%;" />
+
+
+
 ### 2 添加约束
 
 #### 2.1 添加主键约束
@@ -182,6 +198,10 @@ DELETE FROM Project
 WHERE id = 100 ;
 ```
 
+![QQ截图20201122145030](D:\github\sqlex\2_user\README.assets\QQ截图20201122145030.png)
+
+<img src="D:\github\sqlex\2_user\README.assets\QQ截图20201122145041.png" alt="QQ截图20201122145041"  />
+
 ### 3 执行违反约束的操作
 
 #### 3.1 违反主键约束
@@ -216,6 +236,8 @@ WHERE id in (
   SELECT DISTINCT worker_id FROM WP 
 );
 ```
+
+![QQ截图20201122145053](D:\github\sqlex\2_user\README.assets\QQ截图20201122145053.png)
 
 ### 4 触发器
 
@@ -253,6 +275,8 @@ END$
 DELIMITER ;
 ```
 
+![QQ截图20201122145107](https://i.loli.net/2020/11/22/8AjaEBeQ5ymuY3g.png)
+
 #### 4.2 验证触发器
 
 ```mysql
@@ -280,6 +304,8 @@ SELECT * FROM WP
 WHERE project_id = 5;
 ```
 
+![QQ截图20201122145118](D:\github\sqlex\2_user\README.assets\QQ截图20201122145118.png)
+
 ### 5 用户权限
 
 #### 5.1 创建用户并授权
@@ -294,6 +320,14 @@ GRANT UPDATE(age) ON ex2.Worker TO 'worker1'@'localhost';
 
 #### 5.2 用户登录并修改
 
+先通过
+
+```powershell
+mysql -uworker1 -p123123
+```
+
+登录worker1账号
+
 ```mysql
 use ex2
 
@@ -304,8 +338,29 @@ UPDATE Worker
 SET salary = salary + 20000;
 ```
 
+![QQ截图20201122145303](D:\github\sqlex\2_user\README.assets\QQ截图20201122145303.png)
+
 #### 5.3 删除用户
 
 ```mysql
 DROP USER 'worker1'@'localhost';
 ```
+
+![QQ截图20201122145325](D:\github\sqlex\2_user\README.assets\QQ截图20201122145325.png)
+
+
+
+## 实验中遇到的麻烦及解决方法
+
+**1、本次实验要生成符合要求的学生数据、课程数据、选课数据和教室数据较为麻烦**
+
+我通过修改上一次实验中的数据生成脚本，完成了本次实验的的python数据生成[脚本](https://github.com/youngstudent2/sqlex/blob/master/2_user/generateData.py)
+
+**2、创建触发器和用户授权的语法不了解**
+
+我通过查阅[资料]([MySQL创建触发器（CREATE TRIGGER） (biancheng.net)](http://c.biancheng.net/view/2600.html))自学了实验中需要用到的mysql语法
+
+## 致谢
+
+1、[MySQL教程]([MySQL创建触发器（CREATE TRIGGER） (biancheng.net)](http://c.biancheng.net/view/2600.html))
+
